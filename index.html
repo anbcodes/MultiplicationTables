@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <Style>
+            :root {
+                --game-font-size: 7vh;
+            }
+
+            .buttonRow {
+                border-color: rgb(1, 35, 185)
+            }
+            .button {
+                width: 2em;
+                font-size: var(--game-font-size);
+                padding: 5px;
+                border-width: 1px;
+                border-color: rgb(0, 40, 219);
+                background-color: rgb(0, 41, 226);
+                border-radius: 2px;
+                -webkit-transition-duration: 0.1s; /* Safari */
+                transition-duration: 0.1s;
+                color: white;
+                outline: none;
+            }
+            .button:hover {
+                background-color: rgb(1, 33, 175);
+            }
+            #startButton {
+                width: 12em;
+                font-size: var(--game-font-size);
+                padding: 5px;
+                border-width: 1px;
+                border-color: rgb(25, 216, 0);
+                border-radius: 2px;
+                -webkit-transition-duration: 0.1s; /* Safari */
+                transition-duration: 0.1s;
+                color: black;
+                background-color: rgb(25, 216, 0)
+            }
+            #startButton:hover {
+                background-color: rgb(21, 172, 2)
+            }
+            #buttons {
+                text-align: center
+            }
+            #game2 {
+                text-align: center
+            }
+            #fact {
+                font-size: var(--game-font-size);
+            }
+            #score {
+                font-size: var(--game-font-size);
+            }
+            .numbers {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+            #numberSubmit {
+                width: 100%;
+                background-color: rgb(2, 6, 216);
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            #numberSubmit:hover {
+                background-color: rgb(1, 4, 175);
+            }
+            .Gendiv {
+                width: 30%;
+                border-radius: 5px;
+                background-color: #f2f2f2;
+                padding: 20px;
+            }
+            .EndButton {
+                width: 10em;
+                background-color: rgb(2, 6, 216);
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 30px;
+            }
+
+            .EndButton:hover {
+                background-color: rgb(1, 4, 175);
+            }
+            .EndDiv {
+                text-align: center;
+            }
+            .StartDiv {
+                display: None;
+            }
+            #back {
+                width: 4em;
+                font-size: 2vh;
+                padding: 5px;
+                border-width: 1px;
+                border-color: rgb(25, 216, 0);
+                border-radius: 2px;
+                -webkit-transition-duration: 0.1s; /* Safari */
+                transition-duration: 0.1s;
+                color: black;
+                background-color: rgb(25, 216, 0)
+            }
+            #back:hover {
+                background-color: rgb(21, 172, 2)
+            }
+        </Style>
+    </head>
+    <body>
+        <div id="gen">
+            <h3>Generate your game</h3>
+            <div class="Gendiv">
+                <form onsubmit="return submitForm()">
+                    <label for="FNS">First Number Start: </label>
+                    <input id="FNS" type="text", class="numbers", name="firstNumberStart" value="0"></input><br>
+                    <lable for="FNE">First Number End: </lable>
+                    <input id="FNE" type="text", class="numbers", name="firstNumberEnd" value="15"></input><br>
+                    <label for="SNS"> Second Number Start: </label>
+                    <input id="SNS" type="text", class="numbers", name="secondNumberStart" value="0"></input><br>
+                    <label for="SNE">Second Number End: </label>
+                    <input id="SNE" type="text", class="numbers", name="secondNumberEnd" value="15"></input><br>
+                    <input id="numberSubmit" type="submit" value="Generate">
+                </form>
+            </div>
+        </div>
+        <div id="game" class="StartDiv">
+            <button id="back" onclick="begining()">back</button>
+            <div id="game2">
+                <h1 id="score">Score: 0</h1>
+                <h1 id="fact">You Have Not Clicked Start</h1>
+                <div id="buttons">
+                </div>
+                <button id="startButton" onclick="startGame()">Start Game</button>
+            </div>
+        </div>
+        <div id="wrongNum" class="StartDiv">
+            <h1>Sorry the first or second number start have to be smaller then the end</h1>
+            <button class="EndButton" onclick="begining()">Go Back</button>
+        </div>
+        <div id="endGame" class="EndDiv StartDiv">
+            <h1 id="endScore">Your score was </h1>
+            <button class="EndButton" onclick="begining()"> play again </button>
+        </div>
+        <script>
+            let buttons = document.getElementById("buttons")
+            let numberOneStart;
+            let numberOneEnd;
+            let numberTwoStart;
+            let numberTwoEnd;
+            let n1 = 0;
+            let n2 = 0;
+            let done = 0;
+            let score = 0;
+            let startTime, endTime;
+            let gameStarted = false;
+            function begining() {
+                wrongNumDiv = document.getElementById("wrongNum")
+                wrongNumDiv.style.display = "none";
+                genDiv = document.getElementById("gen")
+                genDiv.style.display = "block";
+                endDiv = document.getElementById("endGame")
+                endDiv.style.display = "none";
+                gameDiv = document.getElementById("game")
+                gameDiv.style.display = "none";
+                console.log("begining")
+            }
+            function submitForm() {
+                
+                genDiv = document.getElementById("gen")
+                genDiv.style.display = "none";
+                numberOneStart = document.getElementById("FNS").value
+                numberOneEnd = document.getElementById("FNE").value
+                numberTwoStart = document.getElementById("SNS").value
+                numberTwoEnd = document.getElementById("SNE").value
+
+                if (numberOneStart >= numberOneEnd || numberTwoStart >= numberTwoEnd) {
+                    console.log("wrong")
+                    wrongNumDiv = document.getElementById("wrongNum")
+                    wrongNumDiv.style.display = "block";
+                    return false
+                }
+                gameDiv = document.getElementById("game")
+                gameDiv.style.display = "block";
+                console.log("game display")
+                return false
+            }
+            for (let x = 0; x < 6; x += 1) {
+                let buttonRow = document.createElement("div")
+                buttonRow.id = "r" + x
+                buttonRow.className = "buttonRow"
+                for (let y = 0; y < 6; y += 1) {
+                    let button = document.createElement("button")
+                    button.id = "r" + x + "c" + y
+                    button.className = "button"
+                    button.addEventListener("click", function (e) {
+                        let self = this
+                        let old_bg = this.style.background;
+
+                        if (checkAnswer(x, y)) {
+                            this.style.backgroundColor = "rgb(6, 191, 2)"
+                        } else {
+                            this.style.backgroundColor = "rgb(191, 3, 3)"
+                        }
+                        setTimeout(function(){
+                            self.style.background = old_bg;
+                        }, 400);
+                    })
+                    button.appendChild(document.createTextNode("0"))
+                    buttonRow.appendChild(button)
+                }
+                buttons.appendChild(buttonRow)
+            }
+            function pickRandomButtonNumbers() {
+                sx = Math.floor((Math.random() * 5));
+                sy = Math.floor((Math.random() * 5));
+                for (let x = 0; x < 6; x += 1) {
+                    for (let y = 0; y < 6; y += 1) {
+                        let button = document.getElementById("r" + x + "c" + y)
+                        if (x != sx && y != sy) {
+                            let KeepGetting = true
+                            while (KeepGetting) {
+                                randomNumber = Math.floor((Math.random() * numberOneEnd*numberTwoEnd));
+                                if (randomNumber != n1*n2) {
+                                    KeepGetting = false
+                                }
+                            }
+                            button.innerText = randomNumber;
+                        }
+                    }
+                }
+                let answerButton = document.getElementById("r" + sx + "c" + sy)
+                answerButton.innerText = n1*n2
+                startTime = new Date()
+            }
+            function updateTextOnScreen() {
+                let fact = document.getElementById("fact")
+                fact.innerText = n1 + "x" + n2
+                let DOMscore = document.getElementById("score")
+                DOMscore.innerText = "Score:" + score
+                pickRandomButtonNumbers()
+            }
+            function finishGame() {
+                gameDiv = document.getElementById("game")
+                gameDiv.style.display = "none";
+                endDiv = document.getElementById("endGame")
+                endDiv.style.display = "block";
+                document.getElementById("endScore").innerText = "Your score was " + score
+            }
+            function getNewRandomNumbers() {
+                n1 = Math.floor((Math.random() * (numberOneEnd-numberOneStart)) + numberOneStart);
+                n2 = Math.floor((Math.random() * (numberTwoEnd-numberTwoStart)) + numberTwoStart);
+            }
+            function checkAnswer(x, y) {
+                if (!gameStarted) {
+                    return ""
+                }
+                let clicked = document.getElementById("r" + x + "c" + y)
+                if (Number(clicked.innerText) === n1*n2) {
+                    endTime = new Date()
+                    let timediff =  endTime - startTime
+                    // console.log(timediff/5)
+                    let sub = Math.floor(2000 - timediff/5)
+                    // console.log(sub)
+                    if (sub > 0) {
+                        score += sub
+                    }
+                    done += 1
+                    if (done >= 15) {
+                        finishGame()
+                    }
+                    getNewRandomNumbers()
+                    updateTextOnScreen();
+                    return true
+                }
+                return false
+            }
+            function startGame() {
+                // console.log(Math.floor(Math.random() * 15));
+                getNewRandomNumbers()
+                updateTextOnScreen()
+                updateTextOnScreen()
+                updateTextOnScreen()
+                updateTextOnScreen()
+                updateTextOnScreen()                
+                updateTextOnScreen()                
+                updateTextOnScreen()  
+                score = 0;
+                console.log("score = 0")          
+                updateTextOnScreen()   
+                gameStarted = true
+            }
+        </script>
+    </body>
+</html>
